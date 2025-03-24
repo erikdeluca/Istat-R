@@ -1,11 +1,12 @@
-# Stranieri in Italia - Shiny App
-
-
 # Stranieri in Italia
 
 Welcome to the **Stranieri in Italia** Shiny Application, designed to
 visualize and analyze ISTAT data on residents in Italy, categorized by
 citizenship and area of residence.
+
+## Access the Application Online
+
+You can access the application online through this link: [Stranieri in Italia - Shiny App](https://erikdeluca.shinyapps.io/Stranieri-in-Italia/)
 
 ## Overview
 
