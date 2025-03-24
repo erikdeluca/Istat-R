@@ -1,0 +1,6 @@
+data filter=lfs diff=lfs merge=lfs -text
+Stranieri[[:space:]]in[[:space:]]Italia/data filter=lfs diff=lfs merge=lfs -text
+*.rds filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+DCIS_POPSTRCIT1[[:space:]]-[[:space:]]Stranieri[[:space:]]residenti[[:space:]]al[[:space:]]1°[[:space:]]gennaio[[:space:]]-[[:space:]]Cittadinanza[[:space:]]-[[:space:]]intero[[:space:]]ds.csv filter=lfs diff=lfs merge=lfs -text

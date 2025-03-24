@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data/.*
+Stranieri in Italia/data/residenti_in_italia.rds
+Stranieri in Italia/data/residenti_in_italia_small.rds

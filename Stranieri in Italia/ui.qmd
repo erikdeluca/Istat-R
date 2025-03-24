@@ -1,0 +1,251 @@
+---
+title: "Stranieri in Italia"
+format: 
+  dashboard:
+    theme:
+      - www/styles.scss
+server: shiny
+---
+
+# Home {orientation="rows"}
+
+::: {.panel-tabset}
+
+## Italiano
+
+Benvenuti nell'applicazione Shiny 'Stranieri in Italia'. Questa app offre approfondimenti interattivi sulla distribuzione e le demografie dei residenti stranieri in Italia. Esplora i dati per località italiana o paese di cittadinanza per ottenere una comprensione più profonda dei modelli migratori.
+
+## English
+
+Welcome to the 'Stranieri in Italia' Shiny Application. This app provides interactive insights into the distribution and demographics of foreign residents in Italy. Explore data by Italian location or country of citizenship to gain a deeper understanding of migration patterns
+
+:::
+
+## Valori assoluti per località italiana {title="Valori assoluti" orientation="rows"}
+
+<!-- ### Per località italiana {orientation="columns"} -->
+
+
+```{r}
+# Regione italiana con maggior numero di residenti con cittadinanza straniera
+print_value_box(
+  title = "Regione italiana con maggior numero di residenti con cittadinanza straniera",
+  text = top_value_box(df, category_italy = "regione", group_by_var = "territorio"),
+  icon = bs_icon("geo-alt"),
+  theme = value_box_theme(bg = my_palette[5], fg = my_palette[1])
+)
+```
+
+
+```{r}
+# Comune italiana con maggior numero di residenti con cittadinanza straniera
+print_value_box(
+  title = "Provincia italiana con maggior numero di residenti con cittadinanza straniera",
+  text = top_value_box(df, category_italy = "provincia", group_by_var = "territorio"),
+  icon = bs_icon("building"),
+  theme = value_box_theme(bg = my_palette[5], fg = my_palette[1])
+)
+```
+
+
+```{r}
+# Comune italiana con maggior numero di residenti con cittadinanza straniera
+print_value_box(
+  title = "Comune italiano con maggior numero di residenti con cittadinanza straniera",
+  text = top_value_box(df, category_italy = "comune", group_by_var = "territorio"),
+  icon = bs_icon("house"),
+  theme = value_box_theme(bg = my_palette[4], fg = my_palette[1])
+)
+```
+
+## Valori assoluti per luogo di cittadinanza {title="Valori assoluti" orientation="rows"}
+
+<!-- ### Per luogo di cittadinanza {orientation="columns"} -->
+
+
+```{r}
+# Continente con maggior numero di residenti in Italia
+print_value_box(
+  title = "Continente con maggior numero di residenti in Italia",
+  text = top_value_box(df, group_by_var = "continent"),
+  icon = bs_icon("globe"),
+  theme = value_box_theme(bg = my_palette[6], fg = my_palette[1])
+)
+```
+
+
+```{r}
+# Regione mondiale con maggior numero di residenti in Italia
+print_value_box(
+  title = "Regione mondiale con maggior numero di residenti in Italia",
+  text = top_value_box(df, group_by_var = "region23"),
+  icon = bs_icon("globe-europe-africa"),
+  theme = value_box_theme(bg = my_palette[6], fg = my_palette[1])
+)
+```
+
+```{r}
+# Paese di cittadinanza con maggior numero di residenti in Italia
+print_value_box(
+  title = "Paese di cittadinanza con maggior numero di residenti in Italia",
+  text = top_value_box(df, group_by_var = "paese_di_cittadinanza"),
+  icon = bs_icon("flag"),
+  theme = value_box_theme(bg = my_palette[6], fg = my_palette[1])
+)
+```
+
+## Valori percentuali {title="Valori percentuali" orientation="rows"}
+
+
+<!-- ### Per località italiana -->
+
+
+```{r}
+# Regione italiana con maggior numero di residenti con cittadinanza straniera
+print_value_box(
+  title = "Regione con la più alta proporzione di cittadini stranieri rispetto a quelli italiani",
+  text = top_value_box(df, category_italy = "regione", group_by_var = "territorio", ratio = T),
+  icon = bs_icon("geo-alt"),
+  theme = value_box_theme(bg = my_palette[4], fg = my_palette[1])
+)
+```
+
+
+
+```{r}
+# Comune italiana con maggior numero di residenti con cittadinanza straniera
+print_value_box(
+  title = "Provincia con la più alta proporzione di cittadini stranieri rispetto a quelli italiani",
+  text = top_value_box(df, category_italy = "provincia", group_by_var = "territorio", ratio = T),
+  icon = bs_icon("building"),
+  theme = value_box_theme(bg = my_palette[4], fg = my_palette[1])
+)
+```
+
+```{r}
+# Comune italiana con maggior numero di residenti con cittadinanza straniera
+print_value_box(
+  title = "Comune con la più alta proporzione di cittadini stranieri rispetto a quelli italiani",
+  text = top_value_box(df, category_italy = "comune", group_by_var = "territorio", ratio = T),
+  icon = bs_icon("house"),
+  theme = value_box_theme(bg = my_palette[4], fg = my_palette[1])
+)
+```
+
+## bottom
+
+::: {.callout-note collapsable=true}
+
+Sono mostrati solo i valori dei paesi con almeno 5 abitanti per la località selezionata (*e.g.* comune, provincia, regione) o almeno un tasso del 0,00001% sulla popolazione residente nella località italiana selezionata.
+
+Per utilizzare rimuovere questi filtri, modificare il file `global.R` e avviare l'applicazione in locale.
+:::
+
+
+# Per Città
+
+## input {.sidebar}
+
+```{r}
+
+shinyWidgets:::html_dependency_picker_bs(theme = bslib::bs_theme(version = 5))
+
+materialSwitch(
+   inputId = "ratio_city",
+   label = "Mostrare i valori in proporzione alla popolazione", 
+    value = T,
+   status = "primary"
+)
+
+pickerInput(
+"city",
+"Provincia",
+choices = mapping_italian_locations |> filter(category == "provincia") |> pull(name) |> sort(),
+selected = c("Trieste", "Torino", "Milano", "Padova"),
+multiple = TRUE,
+options = pickerOptions(container = "body", liveSearch = TRUE, actionsBox = TRUE),
+width = "100%"
+)
+
+prettyRadioButtons(
+   inputId = "gender_per_city",
+   label = "Genere",
+    choices = c(Totale = "totale", Maschile = "maschi", Femminile = "femmine"),
+   inline = TRUE,
+   icon = icon("user"),
+  animation = "pulse",
+   fill = TRUE
+)
+```
+
+## main {orientation="rows"}
+
+### plot
+
+```{r}
+plotOutput("plot_for_italian_place") |> withSpinner()
+```
+
+
+### map {heigth="60%"}
+
+```{r}
+leafletOutput("map_for_italian_place") |> withSpinner()
+```
+
+# Per Paese Di Cittadinanza {orientation="columns"}
+
+## input {.sidebar}
+
+```{r}
+
+materialSwitch(
+   inputId = "ratio_country",
+   label = "Mostrare i valori in proporzione alla popolazione", 
+    value = F,
+   status = "primary"
+)
+
+pickerInput(
+  "country",
+  "Paese di provenienza",
+  choices = mapping_world_locations |> pull(nome) |> sort(),
+  selected = c("Colombia", "Romania", "Perù", "Cina"),
+  multiple = TRUE,
+  options = pickerOptions(container = "body", liveSearch = TRUE, actionsBox = TRUE),
+  width = "100%"
+)
+
+prettyRadioButtons(
+   inputId = "gender_per_country",
+   label = "Genere",
+    choices = c(Totale = "totale", Maschile = "maschi", Femminile = "femmine"),
+   inline = TRUE,
+   icon = icon("user"),
+  animation = "pulse",
+   fill = TRUE
+)
+
+prettyRadioButtons(
+   inputId = "italian_category",
+   label = "Categoria",
+    choices = c(Regione = "regione", Provincia = "provincia", Comune = "comune"),
+   inline = TRUE,
+   icon = icon("glyphicon glyphicon-globe"),
+  animation = "pulse",
+   fill = TRUE
+)
+
+```
+
+## plot
+
+```{r}
+plotOutput("plot_for_country") |> withSpinner()
+```
+
+
+```{r}
+plotlyOutput("map_for_country") |> withSpinner()
+```
+

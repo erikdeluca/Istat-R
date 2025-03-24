@@ -1,0 +1,14 @@
+name: Stranieri-in-Italia
+title: Stranieri-in-Italia
+username: x0fvjx-erik0de0luca
+account: x0fvjx-erik0de0luca
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14187213
+bundleId: 9993735
+url: https://erikdeluca.shinyapps.io/Stranieri-in-Italia/
+version: 1
+quarto_version: 1.7.17
+quarto_engines: knitr
+asMultiple: FALSE
+asStatic: FALSE
